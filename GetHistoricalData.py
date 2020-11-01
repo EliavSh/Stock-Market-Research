@@ -31,16 +31,18 @@ class MyWrapper(EWrapper):
         print("Error. Id: ", reqId, " Code: ", errorCode, " Msg: ", errorString)
 
     def start(self):
-        queryTime = (datetime.datetime.today() - datetime.timedelta(days=180)).strftime("%Y%m%d %H:%M:%S")
+        queryTime = (datetime.datetime.today() - datetime.timedelta(days=5)).strftime("%Y%m%d %H:%M:%S")
 
-        fx = Contract()
-        fx.secType = "CASH"
-        fx.symbol = "USD"
-        fx.currency = "JPY"
-        fx.exchange = "IDEALPRO"
+        contract = Contract()
+
+        contract.symbol = "AAPL"
+        contract.secType = "STK"
+        contract.exchange = "SMART"
+        contract.currency = "USD"
+        contract.primaryExchange = "NASDAQ"
 
         # 6 request data, using fx since I don't have Japanese data
-        app.reqHistoricalData(4102, fx, queryTime, "1 M", "1 day", "MIDPOINT", 1, 1, False, [])
+        app.reqHistoricalData(8, contract, queryTime, "150 S", "30 secs", "MIDPOINT", 1, 1, False, [])
 
 
 app = EClient(MyWrapper())  # 1 create wrapper subclass and pass it to EClient
