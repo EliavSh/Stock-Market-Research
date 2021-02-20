@@ -42,6 +42,7 @@ class MyWrapper(EWrapper):
         self.current_date = ""
         self.sampling_rate = ""
         self.just_starting = True
+        self.did_something = False
         self.the_app_is_down = False
         self.nextValidOrderId = 0
 
@@ -58,6 +59,7 @@ class MyWrapper(EWrapper):
         if self.just_starting:
             self.current_date = bar.date
             self.just_starting = False
+            self.did_something = True
         write_data_point(self.symbol, bar)
 
     def historicalDataEnd(self, reqId: int, start: str, end: str):
@@ -78,6 +80,8 @@ class MyWrapper(EWrapper):
         # print("Error. Id: ", reqId, " Code: ", errorCode, " Msg: ", errorString)
         if "Enable ActiveX and Socket EClients".lower() in errorString.lower():
             self.the_app_is_down = True
+        if "Historical Market Data Service error message:HMDS query returned no data: ACOR@SMART Trades" == errorString:
+            app.disconnect()
 
     def start(self):
         if self.current_date.__len__() == 0 or self.sampling_rate.__len__() == 0:
@@ -114,14 +118,17 @@ start_processing_time = time.time()
 def main():
     my_thread = MyThread(app)  # initiating 'my_thread' inside the function ensures it is killed after exiting the 'main' function
     my_thread.start()
-    # print('Started processing: ' + stock_symbol + ', at: ' + str(time.time() - start_processing_time))
     time.sleep(24)  # sleep for the period of time the collection of data should take - expected 4 minutes per stock, and 10 extractions for the period with set
-    app.disconnect()  # this disconnection ensures that the app isn't connected after 'main' and 'my' threads are done
+    my_thread.join()
+    if not my_wrapper.did_something:
+        # if my_wrapper didn't change the 'just_starting' flag - it is stuck and we need to stop querying the stock
+        app.disconnect()  # this disconnection ensures that the app isn't connected after 'main' and 'my' threads are done
+        time.sleep(1)  # waiting for another one second to let 'my_thread' exit the loop in case it's stuck, before the 'main' thread starts a new connection
 
 
 for stock_symbol in list(stocks_info['Symbol']):
     if stock_symbol in processed_stocks:
-        # if we already gathered the information about a stock, move on..
+        # if we already gathered the information about a stock, move on to the next one
         continue
 
     my_wrapper = MyWrapper()
@@ -138,6 +145,9 @@ for stock_symbol in list(stocks_info['Symbol']):
             app = EClient(my_wrapper)
             app.connect('127.0.0.1', 7496, clientId=123)
             main()
+            if not my_wrapper.did_something:
+                # if my_wrapper didn't change the 'just_starting' flag - it is stuck and we need to stop querying the stock
+                break
         finally:
             if my_wrapper.the_app_is_down:
                 exit()
@@ -145,3 +155,6 @@ for stock_symbol in list(stocks_info['Symbol']):
                 app = EClient(my_wrapper)
                 app.connect('127.0.0.1', 7496, clientId=123)
                 main()
+                if not my_wrapper.did_something:
+                    # if my_wrapper didn't change the 'just_starting' flag - it is stuck and we need to stop querying the stock
+                    break
