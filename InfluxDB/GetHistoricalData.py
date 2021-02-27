@@ -44,6 +44,7 @@ class MyWrapper(EWrapper):
         self.just_starting = True
         self.did_something = False
         self.the_app_is_down = False
+        self.start_processing_time = time.time()
         self.nextValidOrderId = 0
 
     def nextValidId(self, orderId: int):
@@ -60,13 +61,15 @@ class MyWrapper(EWrapper):
             self.current_date = bar.date
             self.just_starting = False
             self.did_something = True
+            self.start_processing_time = time.time()
         write_data_point(self.symbol, bar)
 
     def historicalDataEnd(self, reqId: int, start: str, end: str):
         # 8 data is finished
         # print("Started processing at: " + end)
         # print("Finished processing at: " + self.current_date)
-        print("Finished processing " + self.symbol + ": " + self.convert_time(end) + " --> " + self.convert_time(self.current_date))
+        print("Finished processing " + self.symbol + ": " + self.convert_time(end) + " --> " + self.convert_time(self.current_date) + ' in ' +
+              str(time.time() - self.start_processing_time))
         # 9 this is the logical end of your program
         self.just_starting = True
         app.disconnect()
@@ -103,7 +106,6 @@ class MyWrapper(EWrapper):
 influx_client = InfluxDBClient()
 influx_client.switch_database(influx_client.get_list_database()[1]['name'])
 processed_stocks = list(map(lambda x: x['name'], influx_client.get_list_measurements()))
-list(map(lambda x: processed_stocks.remove(x), ['ACOR', 'ACRS', 'ACRX']))
 
 start_date = '20210219  00:00:00'
 end_date = '20210101  00:00:00'
@@ -118,17 +120,18 @@ start_processing_time = time.time()
 def main():
     my_thread = MyThread(app)  # initiating 'my_thread' inside the function ensures it is killed after exiting the 'main' function
     my_thread.start()
-    time.sleep(24)  # sleep for the period of time the collection of data should take - expected 4 minutes per stock, and 10 extractions for the period with set
-    my_thread.join()
-    if not my_wrapper.did_something:
-        # if my_wrapper didn't change the 'just_starting' flag - it is stuck and we need to stop querying the stock
-        app.disconnect()  # this disconnection ensures that the app isn't connected after 'main' and 'my' threads are done
-        time.sleep(1)  # waiting for another one second to let 'my_thread' exit the loop in case it's stuck, before the 'main' thread starts a new connection
+    time.sleep(25)  # sleep for the period of time the collection of data should take - expected 4 minutes per stock, and 10 extractions for the period with set
+    # if not my_wrapper.did_something:
+    # if my_wrapper didn't change the 'just_starting' flag - it is stuck and we need to stop querying the stock
+    app.disconnect()  # this disconnection ensures that the app isn't connected after 'main' and 'my' threads are done
+    # time.sleep(1)  # waiting for another one second to let 'my_thread' exit the loop in case it's stuck, before the 'main' thread starts a new connection
+    # my_thread.join()
 
 
 for stock_symbol in list(stocks_info['Symbol']):
-    if stock_symbol in processed_stocks:
+    if stock_symbol in processed_stocks or stock_symbol == 'ON' or stock_symbol == 'TRUE':
         # if we already gathered the information about a stock, move on to the next one
+        # The stocks named ON and TRUE messed up my queries..
         continue
 
     my_wrapper = MyWrapper()
@@ -143,6 +146,7 @@ for stock_symbol in list(stocks_info['Symbol']):
             # another effect of this implementation is at least two rounds of data extraction
             # to sum up, the following code works but sometimes will extract extra data - its OK by me :)
             app = EClient(my_wrapper)
+            my_wrapper.did_something = False
             app.connect('127.0.0.1', 7496, clientId=123)
             main()
             if not my_wrapper.did_something:
@@ -150,9 +154,11 @@ for stock_symbol in list(stocks_info['Symbol']):
                 break
         finally:
             if my_wrapper.the_app_is_down:
+                print('It seems like the app is down, closing connection')
                 exit()
             else:
                 app = EClient(my_wrapper)
+                my_wrapper.did_something = False
                 app.connect('127.0.0.1', 7496, clientId=123)
                 main()
                 if not my_wrapper.did_something:
