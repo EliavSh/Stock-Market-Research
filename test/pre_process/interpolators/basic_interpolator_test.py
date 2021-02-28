@@ -38,8 +38,8 @@ class BasicInterpolatorTest(unittest.TestCase):
         for value_to_check in range(len(STOCK_FIELDS) - 1):
             unique_length_series = pd.Series([len(interpolated_data[x][value_to_check]) for x in interpolated_data.keys()]).unique()
             self.assertEqual(len(unique_length_series), 1, 'Should be 1')
-            self.assertEqual(unique_length_series[0], max([max([len(values_list) for values_list in interpolated_data[symbol]]) for symbol in interpolated_data]))
+            self.assertEqual(unique_length_series[0],
+                             max([max([len(values_list) for values_list in interpolated_data[symbol]]) for symbol in interpolated_data]))
 
         time_length_series = pd.Series([len(interpolated_data[x][0]) for x in interpolated_data.keys()])
         print('Description of number of timestamps for our stocks after interpolation:\n' + str(time_length_series.describe()) + '\n')
-
