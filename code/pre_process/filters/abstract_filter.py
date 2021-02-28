@@ -5,8 +5,8 @@ from typing import List, Dict
 import numpy as np
 from influxdb import InfluxDBClient
 
-from InfluxDB import influx_utils
-from InfluxDB.influx_utils import InfluxUtils
+from code.InfluxDB import influx_utils
+from code.InfluxDB.influx_utils import InfluxUtils
 
 
 class AbstractFilter(ABC):

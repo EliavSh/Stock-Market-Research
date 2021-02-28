@@ -2,8 +2,8 @@ from typing import Dict, List
 import datetime
 import numpy as np
 import pandas as pd
-from .abstract_interpolation import AbstractInterpolate
-from InfluxDB import influx_utils
+from .abstract_interpolator import AbstractInterpolate
+from ...InfluxDB import influx_utils
 import time
 
 

@@ -10,7 +10,7 @@ import pandas as pd
 import datetime
 import logging
 
-from InfluxDB.MyThread import MyThread
+from code.InfluxDB import MyThread
 
 """
 In this script we get data from some time-point backwards to another

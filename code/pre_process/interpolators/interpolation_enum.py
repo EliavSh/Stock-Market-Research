@@ -1,5 +1,5 @@
 from enum import Enum
-from .basic_interpolation import BasicInterpolation
+from .basic_interpolator import BasicInterpolation
 
 
 class InterpolationEnum(Enum):
