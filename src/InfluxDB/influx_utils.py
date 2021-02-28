@@ -18,9 +18,11 @@ My mission is to evaluate the functions as set and individually
 from typing import *
 import datetime
 import numpy as np
-
 from typing import List
 
+from influxdb import InfluxDBClient
+
+IB_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 DB_RESOLUTION = 5  # (minutes)
 SECONDS_IN_MINUTE = 60
 MINUTES_IN_HOUR = 60
@@ -30,6 +32,10 @@ FIRST_DATETIME_OF_DATA = datetime.datetime(2020, 12, 23)
 LAST_DATETIME_OF_DATE = datetime.datetime(2021, 2, 27)
 TOTAL_DAYS_OF_DATA = (LAST_DATETIME_OF_DATE - FIRST_DATETIME_OF_DATA).days
 STOCK_FIELDS = ['time', 'close', 'high', 'low', 'open', 'volume']
+
+
+def get_field_indices(fields: List[str]) -> List[int]:
+    return [STOCK_FIELDS.index(f) for f in fields]
 
 
 class InfluxUtils:
@@ -59,7 +65,7 @@ class InfluxUtils:
         :param strange_time: time to be converted
         :return: time after conversion, days
         """
-        return datetime.datetime.strptime(strange_time, "%Y-%m-%dT%H:%M:%SZ").timestamp()
+        return datetime.datetime.strptime(strange_time, IB_DATE_FORMAT).timestamp()
 
     def get_single_stock_data(self, symbol: str, from_datetime: datetime.datetime, to_datetime: datetime.datetime) -> Optional[List[List[str or int or float]]]:
         """
@@ -80,7 +86,7 @@ class InfluxUtils:
         ii = np.where(np.array([x in STOCK_FIELDS for x in field_names]))  # all the interesting indices by STOCK_FIELDS
         return [[x[i] for x in field_values] for i in list(*ii)]  # gather fields for all STOCK_FIELD's, for all timestamps
 
-    def get_stock_summary(self, symbol: str) -> Dict[str, float]:
+    def get_stock_summary(self, symbol: str) -> Dict:
         """
         Extract some metadata regarding the stock:
         1. total days of data on it
@@ -115,8 +121,9 @@ class InfluxUtils:
 if __name__ == '__main__':
     # client = InfluxDBClient()
     # client.switch_database(client.get_list_database()[1]['name'])
-
-    # apple_stock_summary = get_stock_summary('A')
+    #
+    # influx_utils = InfluxUtils(client)
+    # apple_stock_summary = influx_utils.get_stock_summary('AACG')
 
     # TEMP_DATETIME_OF_DATA = datetime.datetime(2021, 2, 17)
     # get_all_stocks_data(from_datetime=TEMP_DATETIME_OF_DATA, to_datetime=LAST_DATETIME_OF_DATE)

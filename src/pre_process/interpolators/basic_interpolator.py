@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 from .abstract_interpolator import AbstractInterpolate
-from ...InfluxDB import influx_utils
+from src.InfluxDB import influx_utils
 import time
 
 

@@ -2,7 +2,7 @@ from typing import *
 from abc import abstractmethod
 
 import numpy as np
-from pre_process.filters.abstract_filter import AbstractFilter
+from src.pre_process.filters.abstract_filter import AbstractFilter
 
 
 class MaximumDaysFilter(AbstractFilter):

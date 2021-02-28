@@ -1,5 +1,5 @@
 from enum import Enum
-from pre_process.filters.max_filters import *
+from src.pre_process.filters.max_filters import *
 from .abstract_filter import AbstractFilter
 
 
