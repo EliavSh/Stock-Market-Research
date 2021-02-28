@@ -10,7 +10,7 @@ import pandas as pd
 import datetime
 import logging
 
-from src.InfluxDB import MyThread
+from src.InfluxDB.my_thread import MyThread
 
 """
 In this script we get data from some time-point backwards to another
@@ -112,6 +112,8 @@ end_date = '20210101  00:00:00'
 
 time_format = "%Y%m%d %H:%M:%S"
 
+# https://www.nasdaq.com/market-activity/stocks/screener
+# got all NASDAQ stocks with MARKET CAP greater than 50M$
 stocks_info = pd.read_csv('influxDB/nasdaq_stocks.csv')
 
 start_processing_time = time.time()
