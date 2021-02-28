@@ -3,13 +3,13 @@ import datetime
 import numpy as np
 import pandas as pd
 from .abstract_interpolator import AbstractInterpolate
-from src.InfluxDB import influx_utils
+from src.influx_db import influx_utils
 import time
 
 
 class BasicInterpolation(AbstractInterpolate):
 
-    def interpolate(self, stocks_data: Dict[str, List[List]]) -> Dict[str, List[List]]:
+    def interpolate(self, stocks_data: Dict[str, List[List]]) -> None:
         """
         Fill the missing values of : Close, High, Low, Open with their following/last entry
         Fill the missing volume with zeros
@@ -54,4 +54,3 @@ class BasicInterpolation(AbstractInterpolate):
                 # fix volume
                 stocks_data[x][volume_index].insert(i, 0)
         print('Interpolating took: ' + "{:.2f}".format(time.time() - start_time) + ' seconds.\n')
-        return stocks_data

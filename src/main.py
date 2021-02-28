@@ -1,11 +1,14 @@
 from src import *
 
-# filter stocks by available filter
-max_days_filter = FilterEnum.MaxTradingDays.get()
-stocks_data = max_days_filter.get_filtered_data()
+# filter stocks by: keep only the stocks with the maximum trading days in their record (our database)
+stocks_data = FilterEnum.MaxTradingDays.get().get_filtered_data()
 
-# interpolate data by available interpolator
-basic_interpolation = InterpolationEnum.BasicInterpolation.get()
-interpolated_data = basic_interpolation.interpolate(stocks_data=stocks_data)
+# interpolate data: fill missing times by next values, except the volume - fill with zeros
+InterpolationEnum.BasicInterpolation.get().interpolate(stocks_data=stocks_data)
+
+# normalize data
+NormalizerEnum.BasicNormalizer.get().normalize(stocks_data)
+
+# process
 
 print("king")

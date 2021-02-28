@@ -5,5 +5,5 @@ from typing import Dict, List
 class AbstractNormalizer(ABC):
 
     @abstractmethod
-    def normalize(self: Dict[str, List[list]]) -> Dict[str, List[list]]:
+    def normalize(self, stocks_list: Dict[str, List[list]]) -> None:
         raise NotImplementedError

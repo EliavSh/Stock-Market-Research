@@ -1,1 +1,1 @@
-from .interpolation_enum import InterpolationEnum
+from .interpolator_enum import InterpolationEnum

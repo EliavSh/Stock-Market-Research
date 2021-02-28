@@ -5,5 +5,5 @@ from typing import Dict, List
 class AbstractInterpolate(ABC):
 
     @abstractmethod
-    def interpolate(self, stocks_data: Dict[str, List[List]]) -> Dict[str, List[List]]:
+    def interpolate(self, stocks_data: Dict[str, List[List]]) -> None:
         raise NotImplementedError
