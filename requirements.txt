@@ -1,0 +1,8 @@
+tensorflow==1.14.0
+numpy~=1.17.0
+argparse~=1.4.0
+pandas~=1.2.2
+scikit-learn~=0.24.1
+datetime~=4.3
+influxdb~=5.3.1
+ibapi  # install with python C:\Users\ELIAV\PycharmProjects\TWS API\source\pythonclient\setup.py install

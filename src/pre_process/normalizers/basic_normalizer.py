@@ -21,6 +21,7 @@ class BasicNormalizer(AbstractNormalizer):
             stocks_list[stock][time_index] = stocks_list[stock][time_index][1:]
 
             # normalize the values: [close, high, low, open] by change rate: value -> (value - last_value)/last_value
+            # TODO - analyze the influence of the small values we create here, maybe we should do just value/last_value?
             for value in values_indices:
                 stocks_list[stock][value] = list(pd.Series(stocks_list[stock][value]).diff().values[1:] / pd.Series(stocks_list[stock][value]).values[:-1])
 
