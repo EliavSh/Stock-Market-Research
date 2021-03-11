@@ -74,8 +74,7 @@ class MyWrapper(EWrapper):
         self.just_starting = True
         app.disconnect()
 
-    @staticmethod
-    def convert_time(t):
+    def convert_time(self, t):
         return datetime.datetime.strptime(t, "%Y%m%d %H:%M:%S").strftime("%d/%m/%Y %H:%M:%S")
 
     def error(self, reqId, errorCode, errorString):
@@ -114,7 +113,9 @@ time_format = "%Y%m%d %H:%M:%S"
 
 # https://www.nasdaq.com/market-activity/stocks/screener
 # got all NASDAQ stocks with MARKET CAP greater than 50M$
-stocks_info = pd.read_csv('influxDB/nasdaq_stocks.csv')
+# stocks_info = pd.read_csv('influxDB/nasdaq_stocks.csv')
+# get all snp500 stocks
+stocks_info = pd.read_csv('../pre_process/data_utils/constituents.csv')
 
 start_processing_time = time.time()
 
@@ -131,7 +132,7 @@ def main():
 
 
 for stock_symbol in list(stocks_info['Symbol']):
-    if stock_symbol in processed_stocks or stock_symbol == 'ON' or stock_symbol == 'TRUE':
+    if stock_symbol in processed_stocks or stock_symbol in ['ON', 'TRUE', 'ALL']:
         # if we already gathered the information about a stock, move on to the next one
         # The stocks named ON and TRUE messed up my queries..
         continue

@@ -6,5 +6,5 @@ from .abstract_normalizer import AbstractNormalizer
 class NormalizerEnum(Enum):
     BasicNormalizer = BasicNormalizer
 
-    def get(self) -> AbstractNormalizer:
-        return self.value()
+    def get(self, config) -> AbstractNormalizer:
+        return self.value(config)

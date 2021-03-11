@@ -28,10 +28,10 @@ SECONDS_IN_MINUTE = 60
 MINUTES_IN_HOUR = 60
 HOURS_IN_TRADING_DAY = 7.5
 HOURS_IN_DAY = 24
-FIRST_DATETIME_OF_DATA = datetime.datetime(2020, 12, 23)
-LAST_DATETIME_OF_DATE = datetime.datetime(2021, 2, 27)
+FIRST_DATETIME_OF_DATA = datetime.datetime(2021, 1, 1)  # TODO - change back to (2020, 12, 23)
+LAST_DATETIME_OF_DATE = datetime.datetime(2021, 2, 16)  # TODO - change back to (2021, 2, 27)
 TOTAL_DAYS_OF_DATA = (LAST_DATETIME_OF_DATE - FIRST_DATETIME_OF_DATA).days
-STOCK_FIELDS = ['time', 'close', 'high', 'low', 'open', 'volume']
+STOCK_FIELDS = ['time', 'close', 'volume']
 
 
 def get_field_indices(fields: List[str]) -> List[int]:
@@ -42,24 +42,21 @@ class InfluxUtils:
     def __init__(self, client):
         self.client = client
 
-    @staticmethod
-    def timestamp_to_datetime(time_stamp):
+    def timestamp_to_datetime(self, time_stamp):
         """
         :param time_stamp: number like 1608674400.0
         :return: object like datetime.datetime(2020, 12, 23)
         """
         return datetime.datetime.fromtimestamp(time_stamp)
 
-    @staticmethod
-    def datetime_to_timestamp(date_time):
+    def datetime_to_timestamp(self, date_time):
         """
         :param date_time: object like  datetime.datetime(2020, 12, 23)
         :return: number like 1608674400.0
         """
         return datetime.datetime.timestamp(date_time)
 
-    @staticmethod
-    def db_time_to_timestamp(strange_time):
+    def db_time_to_timestamp(self, strange_time):
         """
         Gets time point from the database and convert it to float timestamp
         :param strange_time: time to be converted
@@ -115,7 +112,6 @@ class InfluxUtils:
                 int(self.datetime_to_timestamp(to_datetime)) * 10 ** 9))
         print('Data collection of all stocks took: ' + str(datetime.datetime.now().timestamp() - now))
         print('king')
-        pass
 
 
 if __name__ == '__main__':
