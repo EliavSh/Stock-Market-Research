@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from ..config import Config
+from src.main_config import MainConfig
 
 # TODO - move it to config!
 train_start = 0.
@@ -29,11 +29,11 @@ class TimeSeriesSplit:
         self.test_start = test_start
         self.test_end = test_end
 
-        self.label = Config.label
-        self.features = Config.features
-        self.look_back = Config.look_back
+        self.label = MainConfig.label
+        self.features = MainConfig.features
+        self.look_back = MainConfig.look_back
 
-        self.n_classes = Config.n_classes
+        self.n_classes = MainConfig.n_classes
         self.thresholds = []
 
     def train_test_split(self):
@@ -47,10 +47,11 @@ class TimeSeriesSplit:
 
         # refactor the data to dimension: (time_stamps, companies, look_back, features)
         look_backed_data = []
+        # TODO - use the mean data until - 1 - num_intervals
         for t in range(self.look_back, len(data[self.look_back:] - 1)):  # -1 for getting the target value: the next value of every sample
             # append (x,y) tuples where x is the look_backed data and y is the target_value of the next time-stamp (t+1)
             x = np.moveaxis(data[t - self.look_back:t, :, :], 0, 1)
-            # TODO - add a configuration of the time range we want to predict - without nothing changed its at 5sec frequency
+            # TODO - add a configuration of the time range we want to predict - without nothing changed its at 5min frequency
             numeric_y = data[t + 1, :, self.features.index(self.label)]
             look_backed_data.append((x, self.numeric_to_label(numeric_y), numeric_y))
 
@@ -95,5 +96,5 @@ class TimeSeriesSplit:
             exit()
 
         if self.n_classes < 2:
-            print('number of classes must 2+')
+            print('number of classes must > 1')
             exit()

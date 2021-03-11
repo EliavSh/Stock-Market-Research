@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from typing import Tuple, List
 
-from ..config import Config
+from ..hats_config import HatsConfig
 
 # TODO - move to config
 max_relations_allowed_quantile = .9
@@ -15,7 +15,7 @@ max_relations_allowed_quantile = .9
 class ModelParams:
 
     def __init__(self, symbols_with_historical_data: List[str]):
-        self.neighbors_sample = Config.neighbors_sample
+        self.neighbors_sample = HatsConfig.neighbors_sample
         self.symbols_with_historical_data = symbols_with_historical_data
         self.neighbors_per_relation_type, self.summary_adjacency_matrix, self.num_relation_types, self.num_companies = self.calc_relation_types_over_companies()
 

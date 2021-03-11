@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from .evaluator import Evaluator
 from .abstract_executor import AbstractExecutor
-from ..hats_model.config import Config
+from src.main_config import MainConfig
 from ..model_enum import ModelEnum
 
 
@@ -14,9 +14,9 @@ class BasicExecutor(AbstractExecutor):
 
         self.data_set = data_set
         self.model = model.get(sess, writer, symbols)
-        self.evaluator = Evaluator(n_labels=Config.num_classes)
+        self.evaluator = Evaluator(n_labels=MainConfig.num_classes)
 
-        self.n_epochs = Config.n_epochs
+        self.n_epochs = MainConfig.n_epochs
         # TODO - write n_epochs and num_classes in another config! the executor shouldn't get the hats' config!!!
 
         self.summary = tf.Summary()

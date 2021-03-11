@@ -1,7 +1,8 @@
 import tensorflow as tf
 
+from src.main_config import MainConfig
 from ..abstract_model import AbstractModel
-from .config import Config
+from .hats_config import HatsConfig
 from src.process.model.executor.evaluator import Evaluator
 from .hats_utils.model_parameters import ModelParams
 
@@ -15,21 +16,24 @@ class HATS(AbstractModel):
 
         # construct essential classes
         self.params = ModelParams(symbols)
-        self.evaluator = Evaluator(n_labels=Config.num_classes)
+        self.evaluator = Evaluator(n_labels=MainConfig.num_classes)
 
-        # load from config
-        self.n_epochs = Config.n_epochs
-        self.features = Config.features
-        self.input_dim = len(Config.features)
-        self.look_back = Config.look_back
-        self.n_labels = Config.num_classes
-        self.lr = Config.lr
-        self.node_feat_size = Config.node_feat_size
-        self.rel_attention = Config.rel_attention
+        # load from main_config
+        self.n_epochs = MainConfig.n_epochs
+        self.features = MainConfig.features
+        self.input_dim = len(MainConfig.features)
+        self.look_back = MainConfig.look_back
+        self.n_labels = MainConfig.num_classes
+
+        # load from hats_config
+        self.lr = HatsConfig.lr
+        self.node_feat_size = HatsConfig.node_feat_size
+        self.rel_attention = HatsConfig.rel_attention
+        self.num_lstm_cells = HatsConfig.num_lstm_cells
 
         # helper variables
-        self.num_neighbors = tf.placeholder_with_default(Config.neighbors_sample, shape=(), name='num_neighbors')
-        self.keep_prob = tf.placeholder_with_default(1 - Config.dropout, shape=(), name='keep_prob')
+        self.num_neighbors = tf.placeholder_with_default(HatsConfig.neighbors_sample, shape=(), name='num_neighbors')
+        self.keep_prob = tf.placeholder_with_default(1 - HatsConfig.dropout, shape=(), name='keep_prob')
 
         self.build_model()
 
@@ -79,7 +83,7 @@ class HATS(AbstractModel):
 
     def get_state(self, state_module):
         if state_module == 'lstm':
-            cells = [tf.contrib.rnn.BasicLSTMCell(self.node_feat_size) for _ in range(1)]
+            cells = [tf.contrib.rnn.BasicLSTMCell(self.node_feat_size) for _ in range(self.num_lstm_cells)]
             dropout = [tf.contrib.rnn.DropoutWrapper(cell, input_keep_prob=self.keep_prob,
                                                      output_keep_prob=self.keep_prob) for cell in cells]
             lstm_cell = tf.nn.rnn_cell.MultiRNNCell(dropout, state_is_tuple=True)
