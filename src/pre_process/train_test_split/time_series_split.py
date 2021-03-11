@@ -9,8 +9,19 @@ train_end = 0.8
 test_start = 0.8
 test_end = 1.
 
+prediction_intervals = 6  # predicting the return of the next 5*6=30 minutes
+
 
 class TimeSeriesSplit:
+    """
+    In this class we are going to split the data into two sets: train and test.
+    Each set consists of batches of samples by some 'look_back' configuration-value.
+    Each sample of a set is a tuple of:
+    1. input fields
+    2. boolean class 'hot' 1D-array (length is number_of_classes)
+    3. output field
+    """
+
     def __init__(self, stocks_data):
         self.stocks_data = stocks_data
         self.train_start = train_start

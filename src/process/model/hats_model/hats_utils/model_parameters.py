@@ -38,8 +38,9 @@ class ModelParams:
         # set commonly used variables from the adjacency matrix
         summary_adjacency_matrix = graph_adjacency_matrix.sum(2)
 
-        # TODO - which max is better
+        # TODO - which max is better?
         max_relations = pd.Series(summary_adjacency_matrix[summary_adjacency_matrix.any(1)].sum(1)).quantile([max_relations_allowed_quantile]).values[0]
+        max_relations = np.inf
         keep_relation_types = np.logical_and(summary_adjacency_matrix.any(1), summary_adjacency_matrix.sum(1) <= max_relations)
 
         # # reduce relation types by zeros
