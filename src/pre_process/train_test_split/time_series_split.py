@@ -1,15 +1,11 @@
 import numpy as np
 import pandas as pd
 
-from src.main_config import MainConfig
-
 # TODO - move it to config!
 train_start = 0.
 train_end = 0.8
 test_start = 0.8
 test_end = 1.
-
-prediction_intervals = 6  # predicting the return of the next 5*6=30 minutes
 
 
 class TimeSeriesSplit:
@@ -22,18 +18,18 @@ class TimeSeriesSplit:
     3. output field
     """
 
-    def __init__(self, stocks_data):
+    def __init__(self, stocks_data, config):
         self.stocks_data = stocks_data
         self.train_start = train_start
         self.train_end = train_end
         self.test_start = test_start
         self.test_end = test_end
 
-        self.label = MainConfig.label
-        self.features = MainConfig.features
-        self.look_back = MainConfig.look_back
+        self.label = config.label
+        self.features = config.features
+        self.look_back = config.look_back
 
-        self.n_classes = MainConfig.n_classes
+        self.n_classes = config.n_classes
         self.thresholds = []
 
     def train_test_split(self):

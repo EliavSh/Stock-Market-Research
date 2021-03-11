@@ -1,8 +1,9 @@
 class MainConfig:
-    look_back = 10  # TODO - the other config have the same variable too... FIX THAT!!!
-    features = ['close', 'volume']
-    label = 'close'
-    n_classes = 3
-    num_classes = 3
-    n_epochs = 300
-    prediction_intervals = [3, 6, 9, 12]  # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
+    def __init__(self):
+        self.look_back = 10
+        self.features = ['close', 'volume']
+        self.label = 'close'
+        self.n_classes = 3
+        self.num_classes = 3
+        self.n_epochs = 300
+        self.prediction_interval = None

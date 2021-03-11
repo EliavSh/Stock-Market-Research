@@ -1,33 +1,46 @@
 import tensorflow as tf
-from copy import deepcopy
 from src import *
 
-# filter stocks by: keep only the stocks with the maximum trading days in their record (our database)
-stocks_data = FilterEnum.IntersectionFilter.get(FilterEnum.SNP500Filter.get(),
-                                                FilterEnum.MaxTradingDays.get(),
-                                                FilterEnum.RelationFilter.get()).get_filtered_data()
 
-# interpolate data: fill missing times by next values, except the volume - fill with zeros
-InterpolationEnum.BasicInterpolation.get().interpolate(stocks_data=stocks_data)
+def conf_to_string(c: MainConfig):
+    return "prediction_interval_%s" % c.prediction_interval
 
-# save the raw stocks data before normalizing for loss calculations
-raw_stocks_data = deepcopy(stocks_data)
 
-# normalize data
-NormalizerEnum.BasicNormalizer.get().normalize(stocks_data)
+def main(conf):
+    # filter stocks by: keep only the stocks with the maximum trading days in their record (our database)
+    stocks_data = FilterEnum.IntersectionFilter.get(conf, FilterEnum.SNP500Filter.get(conf),
+                                                    FilterEnum.MaxTradingDays.get(conf),
+                                                    FilterEnum.RelationFilter.get(conf)).get_filtered_data()
 
-# split data to train and test
-train_set, test_set = TimeSeriesSplit(stocks_data).train_test_split()
+    # interpolate data: fill missing times by next values, except the volume - fill with zeros
+    InterpolationEnum.BasicInterpolation.get().interpolate(stocks_data=stocks_data)
 
-# process
-sess = tf.Session()
+    # normalize data
+    NormalizerEnum.BasicNormalizer.get(conf).normalize(stocks_data)
 
-LOGDIR = "tensorboard_temp/temp"
-writer = tf.compat.v1.summary.FileWriter(LOGDIR)
+    # TODO - add indicators of pre/after/start/end of the market
 
-model = BasicExecutor(sess, writer, ModelEnum.HATS, train_set, list(stocks_data.keys()))
-# writer.add_graph(sess.graph)
+    # split data to train and test
+    train_set, test_set = TimeSeriesSplit(stocks_data, conf).train_test_split()
 
-model.train()  # TODO - fix the error here
+    # process
+    sess = tf.Session()
 
-print("king")
+    log_dir = "tensorboard/" + conf_to_string(conf)
+    writer = tf.compat.v1.summary.FileWriter(log_dir)
+
+    my_executor = BasicExecutor(sess, writer, ModelEnum.HATS, train_set, list(stocks_data.keys()), conf)
+    # writer.add_graph(sess.graph)
+
+    my_executor.train()  # TODO - fix the error here
+
+    print("king")
+
+
+if __name__ == '__main__':
+    # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
+    prediction_intervals = [12]
+    for prediction_interval in prediction_intervals:
+        config = MainConfig()
+        config.prediction_interval = prediction_interval
+        main(conf=config)

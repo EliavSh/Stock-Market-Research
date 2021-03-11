@@ -4,18 +4,17 @@ from typing import List, Dict
 import numpy as np
 from influxdb import InfluxDBClient
 
-from src.main_config import MainConfig
 from src.influx_db import influx_utils
 from src.influx_db.influx_utils import InfluxUtils
 
 
 class AbstractFilter(ABC):
 
-    def __init__(self):
+    def __init__(self, config):
         self.client = InfluxDBClient()
         self.client.switch_database(self.client.get_list_database()[1]['name'])
         self.influxUtils = InfluxUtils(client=self.client)
-        self.features = MainConfig.features
+        self.features = config.features
 
     @abstractmethod
     def filter(self) -> List[str]:

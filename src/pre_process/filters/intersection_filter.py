@@ -5,8 +5,8 @@ from .abstract_filter import AbstractFilter
 
 class IntersectionFilter(AbstractFilter):
 
-    def __init__(self, *args):
-        super().__init__()
+    def __init__(self, conf, *args):
+        super().__init__(conf)
         self.filters_list = [*args]
 
     def filter(self) -> List[str]:

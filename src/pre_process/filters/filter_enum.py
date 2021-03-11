@@ -19,6 +19,6 @@ class FilterEnum(Enum):
     #  *1. relation_data filter (based on the company relations matrix - pickle file)
     #  2. implement filters by volume, sector, market_cap AND implement mixtures as well (no rush)
 
-    def get(self, *args) -> AbstractFilter:
+    def get(self, conf, *args) -> AbstractFilter:
         # The object instantiates only after calling it with 'get'
-        return self.value(*args)
+        return self.value(conf, *args)

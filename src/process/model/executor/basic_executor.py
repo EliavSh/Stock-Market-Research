@@ -3,22 +3,19 @@ import tensorflow as tf
 
 from .evaluator import Evaluator
 from .abstract_executor import AbstractExecutor
-from src.main_config import MainConfig
 from ..model_enum import ModelEnum
 
 
 class BasicExecutor(AbstractExecutor):
-    def __init__(self, sess, writer, model: ModelEnum, data_set, symbols):
+    def __init__(self, sess, writer, model: ModelEnum, data_set, symbols, config):
         self.sess = sess
         self.writer = writer
 
         self.data_set = data_set
-        self.model = model.get(sess, writer, symbols)
-        self.evaluator = Evaluator(n_labels=MainConfig.num_classes)
+        self.model = model.get(sess, writer, symbols, config)
+        self.evaluator = Evaluator(n_labels=config.num_classes)
 
-        self.n_epochs = MainConfig.n_epochs
-        # TODO - write n_epochs and num_classes in another config! the executor shouldn't get the hats' config!!!
-
+        self.n_epochs = config.n_epochs
         self.summary = tf.Summary()
         self.scalars = []
 

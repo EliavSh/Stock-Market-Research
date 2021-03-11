@@ -1,6 +1,5 @@
 import tensorflow as tf
 
-from src.main_config import MainConfig
 from ..abstract_model import AbstractModel
 from .hats_config import HatsConfig
 from src.process.model.executor.evaluator import Evaluator
@@ -8,7 +7,7 @@ from .hats_utils.model_parameters import ModelParams
 
 
 class HATS(AbstractModel):
-    def __init__(self, sess, writer, symbols):
+    def __init__(self, sess, writer, symbols, config):
         super().__init__()
         # tensorflow and tensorboard initiators
         self.sess = sess
@@ -16,14 +15,14 @@ class HATS(AbstractModel):
 
         # construct essential classes
         self.params = ModelParams(symbols)
-        self.evaluator = Evaluator(n_labels=MainConfig.num_classes)
+        self.evaluator = Evaluator(n_labels=config.num_classes)
 
         # load from main_config
-        self.n_epochs = MainConfig.n_epochs
-        self.features = MainConfig.features
-        self.input_dim = len(MainConfig.features)
-        self.look_back = MainConfig.look_back
-        self.n_labels = MainConfig.num_classes
+        self.n_epochs = config.n_epochs
+        self.features = config.features
+        self.input_dim = len(config.features)
+        self.look_back = config.look_back
+        self.n_labels = config.num_classes
 
         # load from hats_config
         self.lr = HatsConfig.lr
