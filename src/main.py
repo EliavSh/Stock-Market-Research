@@ -19,7 +19,7 @@ def main(conf):
     # normalize data
     NormalizerEnum.BasicNormalizer.get(conf).normalize(stocks_data)
 
-    # TODO - add indicators of pre/after/start/end of the market
+    # TODO - add indicators (as features) of pre/after/start/end of the market
 
     # split data to train and test
     train_set, test_set = TimeSeriesSplit(stocks_data, conf).train_test_split()
