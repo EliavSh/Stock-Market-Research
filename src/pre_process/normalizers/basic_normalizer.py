@@ -12,8 +12,9 @@ class BasicNormalizer(AbstractNormalizer):
     def normalize(self, stocks_list: Dict[str, List[list]]) -> None:
         start_time = time.time()
 
+        # TODO - sync with the values here, influx utils and config files!!
         time_index = influx_utils.get_field_indices(['time'])[0]
-        values_indices = influx_utils.get_field_indices(['close', 'high', 'low', 'open'])
+        values_indices = influx_utils.get_field_indices(['close'])
         volume_index = influx_utils.get_field_indices(['volume'])[0]
 
         for stock in stocks_list.keys():
