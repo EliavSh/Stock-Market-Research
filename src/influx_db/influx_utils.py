@@ -42,24 +42,21 @@ class InfluxUtils:
     def __init__(self, client):
         self.client = client
 
-    @staticmethod
-    def timestamp_to_datetime(time_stamp):
+    def timestamp_to_datetime(self, time_stamp):
         """
         :param time_stamp: number like 1608674400.0
         :return: object like datetime.datetime(2020, 12, 23)
         """
         return datetime.datetime.fromtimestamp(time_stamp)
 
-    @staticmethod
-    def datetime_to_timestamp(date_time):
+    def datetime_to_timestamp(self, date_time):
         """
         :param date_time: object like  datetime.datetime(2020, 12, 23)
         :return: number like 1608674400.0
         """
         return datetime.datetime.timestamp(date_time)
 
-    @staticmethod
-    def db_time_to_timestamp(strange_time):
+    def db_time_to_timestamp(self, strange_time):
         """
         Gets time point from the database and convert it to float timestamp
         :param strange_time: time to be converted

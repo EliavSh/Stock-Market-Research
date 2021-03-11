@@ -46,6 +46,5 @@ class AbstractFilter(ABC):
         print('Filtering took: ' + "{:.2f}".format(time.time() - start_time) + ' seconds.\n')
         return stocks_data
 
-    @staticmethod
-    def clean_string(string: str):
+    def clean_string(self, string: str):
         return string.replace('\'', '').replace(' ', '').replace(']', '').replace('[', '').replace('{', '').replace('}', '')

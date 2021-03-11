@@ -1,5 +1,6 @@
 import tensorflow as tf
 from src import *
+from multiprocessing import Process
 
 
 def conf_to_string(c: MainConfig):
@@ -39,8 +40,13 @@ def main(conf):
 
 if __name__ == '__main__':
     # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
-    prediction_intervals = [12]
+    prediction_intervals = [3, 6, 9, 12]
+    jobs = []
     for prediction_interval in prediction_intervals:
         config = MainConfig()
         config.prediction_interval = prediction_interval
-        main(conf=config)
+        p = Process(target=main, args=(config,))
+        jobs.append(p)
+        p.start()
+    for j in jobs:
+        j.join()

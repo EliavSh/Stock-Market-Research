@@ -74,8 +74,7 @@ class TimeSeriesSplit:
         label_series = pd.Series(np.array([x[:, self.features.index(self.label)] for x in train_data]).flatten())
         self.thresholds = label_series.quantile(np.linspace(0, 1, self.n_classes + 1)[1:-1]).values
 
-    @staticmethod
-    def train_test_summary(name, data):
+    def train_test_summary(self, name, data):
         temp_list = []
         for i in range(len(data)):
             temp_list.append([np.where(x == 1.)[0][0] for x in data[i][1]])

@@ -74,8 +74,7 @@ class MyWrapper(EWrapper):
         self.just_starting = True
         app.disconnect()
 
-    @staticmethod
-    def convert_time(t):
+    def convert_time(self, t):
         return datetime.datetime.strptime(t, "%Y%m%d %H:%M:%S").strftime("%d/%m/%Y %H:%M:%S")
 
     def error(self, reqId, errorCode, errorString):
