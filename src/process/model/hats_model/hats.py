@@ -2,7 +2,6 @@ import tensorflow as tf
 
 from ..abstract_model import AbstractModel
 from .hats_config import HatsConfig
-from src.process.model.executor.evaluator import Evaluator
 from .hats_utils.model_parameters import ModelParams
 
 
@@ -15,7 +14,6 @@ class HATS(AbstractModel):
 
         # construct essential classes
         self.params = ModelParams(symbols)
-        self.evaluator = Evaluator(n_labels=config.num_classes)
 
         # load from main_config
         self.n_epochs = config.n_epochs
@@ -41,7 +39,7 @@ class HATS(AbstractModel):
         self.sess.run(init)
 
     def build_model(self):
-        # TODO - build the model in another class? (the build model method)
+        # TODO - build the model in different class? (only the build_model method)
         # x [num company, lookback]
         self.x = tf.placeholder(tf.float32, shape=[None, self.look_back, self.input_dim], name='x')
         self.y = tf.placeholder(tf.float32, shape=[None, self.n_labels], name='y')
@@ -68,7 +66,6 @@ class HATS(AbstractModel):
 
         with tf.name_scope('loss'):
             self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.y, logits=logits), name='cross_entropy')
-            tf.summary.scalar('cross_entropy_loss', self.cross_entropy)
 
             reg_losses = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
             loss = self.cross_entropy
@@ -78,7 +75,6 @@ class HATS(AbstractModel):
 
             correct_prediction = tf.equal(tf.argmax(logits, -1), tf.argmax(self.y, -1))
             self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        # self.loss = tf.summary.scalar('loss', self.cross_entropy)
 
     def get_state(self, state_module):
         if state_module == 'lstm':

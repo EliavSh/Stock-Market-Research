@@ -4,7 +4,7 @@ from multiprocessing import Process
 
 
 def conf_to_string(c: MainConfig):
-    return "prediction_interval_%s" % c.prediction_interval
+    return "prediction_interval_%s__look_back_%s" % (c.prediction_interval, c.look_back)
 
 
 def main(conf):
@@ -30,23 +30,29 @@ def main(conf):
     log_dir = "tensorboard/" + conf_to_string(conf)
     writer = tf.compat.v1.summary.FileWriter(log_dir)
 
-    my_executor = BasicExecutor(sess, writer, ModelEnum.HATS, train_set, list(stocks_data.keys()), conf)
+    my_executor = BasicExecutor(sess, writer, ModelEnum.HATS, list(stocks_data.keys()), conf)
     # writer.add_graph(sess.graph)
 
-    my_executor.train()  # TODO - fix the error here
+    my_executor.start(train_set, test_set)
 
     print("king")
 
 
 if __name__ == '__main__':
-    # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
-    prediction_intervals = [3, 6, 9, 12]
-    jobs = []
-    for prediction_interval in prediction_intervals:
+    temp = True
+    if temp:
         config = MainConfig()
-        config.prediction_interval = prediction_interval
-        p = Process(target=main, args=(config,))
-        jobs.append(p)
-        p.start()
-    for j in jobs:
-        j.join()
+        config.prediction_interval = 6
+        main(config)
+    else:
+        # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
+        prediction_intervals = [3, 6, 9, 12]
+        jobs = []
+        for prediction_interval in prediction_intervals:
+            config = MainConfig()
+            config.prediction_interval = prediction_interval
+            p = Process(target=main, args=(config,))
+            jobs.append(p)
+            p.start()
+        for j in jobs:
+            j.join()
