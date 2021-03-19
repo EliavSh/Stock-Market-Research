@@ -4,7 +4,7 @@ from multiprocessing import Process
 
 
 def conf_to_string(c: MainConfig):
-    return "prediction_interval_%s__look_back_%s" % (c.prediction_interval, c.look_back)
+    return "prediction_interval_%s__look_back_%s__min_max_back_%s" % (c.prediction_intervals, c.look_back, c.min_max_norm_intervals)
 
 
 def main(conf):
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     temp = True
     if temp:
         config = MainConfig()
-        config.prediction_interval = 6
+        config.prediction_intervals = 6
         main(config)
     else:
         # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction
@@ -50,7 +50,7 @@ if __name__ == '__main__':
         jobs = []
         for prediction_interval in prediction_intervals:
             config = MainConfig()
-            config.prediction_interval = prediction_interval
+            config.prediction_intervals = prediction_interval
             p = Process(target=main, args=(config,))
             jobs.append(p)
             p.start()
