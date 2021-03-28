@@ -36,7 +36,7 @@ class BasicNormalizer(AbstractNormalizer):
                     pd.Series(stocks_list[stock][value]).diff(self.prediction_intervals).values[self.prediction_intervals:] / pd.Series(
                         stocks_list[stock][value]).values[:-self.prediction_intervals])
 
-            stocks_list[stock][volume_index] = self.rescale(stocks_list[stock][volume_index])[self.prediction_intervals:]
+            stocks_list[stock][volume_index] = self.rescale(stocks_list[stock][volume_index][self.prediction_intervals:])
         print('Normalization took: ' + "{:.2f}".format(time.time() - start_time) + ' seconds.\n')
 
     def rescale(self, array: list or np.array) -> list:
@@ -44,14 +44,17 @@ class BasicNormalizer(AbstractNormalizer):
         Rescaling array to range of (0,1)
         Returning array of the same size!
         """
+        new_array = np.zeros((len(array),))
         for i in range(len(array)):
             start_scaling_index = 0 if i <= self.min_max_norm_intervals else i - self.min_max_norm_intervals
             if i <= start_scaling_index + 1:
                 # mean and diff is meaningful from length of 2 and above
                 min_max_range = array[i] or 1
-                mean = 0
+                min_value = 0
             else:
-                min_max_range = np.max(array[start_scaling_index:i]) - np.min(array[start_scaling_index:i]) or 1
-                mean = np.mean(array[start_scaling_index:i]) if i > start_scaling_index + 1 else 0
-            array[i] = (array[i] - mean) / min_max_range
+                min_max_range = np.max(array[start_scaling_index:(i + 1)]) - np.min(array[start_scaling_index:(i + 1)]) or np.max(
+                    array[start_scaling_index:(i + 1)])
+                min_value = np.min(array[start_scaling_index:(i + 1)])
+            new_array[i] = (array[i] - min_value) / min_max_range
+            assert 1 >= new_array[i] >= 0
         return list(array)

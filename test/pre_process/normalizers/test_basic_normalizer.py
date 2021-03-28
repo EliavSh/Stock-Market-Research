@@ -6,14 +6,14 @@ from test import *
 
 
 class TestBasicNormalizer(unittest.TestCase):
-
+    # TODO - fix the test after updating function to rescale values
     def setUp(self) -> None:
         self.utils = Utils()
         stock_symbols = list(range(4))
         stock_lengths = [30] * 4
         self.stocks_data = dict(zip(['stock_' + str(i) for i in stock_symbols], [self.utils.generate_stock_data(size) for size in stock_lengths]))
         self.config = MainConfig()
-        self.config.prediction_interval = [12]
+        self.config.prediction_intervals = [12]
 
     def test(self):
         expected = max([max([len(values_list) for values_list in self.stocks_data[symbol]]) for symbol in self.stocks_data]) - 1
