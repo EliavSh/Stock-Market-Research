@@ -6,16 +6,17 @@ from typing import Tuple, List
 
 from ..hats_config import HatsConfig
 
-# TODO - move to config
-max_relations_allowed_quantile = .9
-
 
 # TODO - add s-outs/logs
 
 class ModelParams:
 
     def __init__(self, symbols_with_historical_data: List[str]):
+        # load from config
         self.neighbors_sample = HatsConfig.neighbors_sample
+        self.max_relations_allowed_quantile = HatsConfig.max_relations_allowed_quantile
+
+        # final properties
         self.symbols_with_historical_data = symbols_with_historical_data
         self.neighbors_per_relation_type, self.summary_adjacency_matrix, self.num_relation_types, self.num_companies = self.calc_relation_types_over_companies()
 
@@ -39,7 +40,7 @@ class ModelParams:
         summary_adjacency_matrix = graph_adjacency_matrix.sum(2)
 
         # TODO - which max is better?
-        max_relations = pd.Series(summary_adjacency_matrix[summary_adjacency_matrix.any(1)].sum(1)).quantile([max_relations_allowed_quantile]).values[0]
+        max_relations = pd.Series(summary_adjacency_matrix[summary_adjacency_matrix.any(1)].sum(1)).quantile([self.max_relations_allowed_quantile]).values[0]
         max_relations = np.inf
         keep_relation_types = np.logical_and(summary_adjacency_matrix.any(1), summary_adjacency_matrix.sum(1) <= max_relations)
 

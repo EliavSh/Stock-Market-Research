@@ -29,7 +29,7 @@ class TimeSeriesSplit:
         self.features = config.features
         self.look_back = config.look_back
 
-        self.n_classes = config.n_classes
+        self.num_classes = config.num_classes
         self.thresholds = []
 
     def train_test_split(self):
@@ -64,7 +64,7 @@ class TimeSeriesSplit:
     def numeric_to_label(self, numeric_y):
         labeled_y = []
         for y_val in numeric_y:
-            label = np.zeros(self.n_classes)
+            label = np.zeros(self.num_classes)
             label[sum(y_val > self.thresholds)] = 1  # set 1 for the index (class) between thresholds
             labeled_y.append(label)
         return labeled_y
@@ -72,7 +72,7 @@ class TimeSeriesSplit:
     def calc_thresholds(self, data):
         train_data = data[int(train_start * len(data)):int(train_end * len(data))]
         label_series = pd.Series(np.array([x[:, self.features.index(self.label)] for x in train_data]).flatten())
-        self.thresholds = label_series.quantile(np.linspace(0, 1, self.n_classes + 1)[1:-1]).values
+        self.thresholds = label_series.quantile(np.linspace(0, 1, self.num_classes + 1)[1:-1]).values
 
     def train_test_summary(self, name, data):
         temp_list = []
@@ -90,6 +90,6 @@ class TimeSeriesSplit:
             print("Couldn't split the data, look back is too big!")
             exit()
 
-        if self.n_classes < 2:
+        if self.num_classes < 2:
             print('number of classes must > 1')
             exit()

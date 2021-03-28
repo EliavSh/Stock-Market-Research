@@ -6,3 +6,4 @@ class HatsConfig:
     rel_attention = True
     dropout = 0.3
     num_lstm_cells = 1
+    max_relations_allowed_quantile = .9
