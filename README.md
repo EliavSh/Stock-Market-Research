@@ -7,11 +7,11 @@ Implementation of hierarchical attention based mechanism for stocks prediction: 
 https://github.com/dmis-lab/hats 
 
 ## Project Pipline
-Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
- - Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
-PreProcess: Filter, Interpolation, Normalization, Feature engineering 
-Process (Models): HATS implementation
-PostProcess - tensorboard visualization: params and graph
+* Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
+  * Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
+* PreProcess: Filter, Interpolation, Normalization, Feature engineering 
+* Process (Models): HATS implementation
+* PostProcess - tensorboard visualization: params and graph
 
 ## Sample Results
 Comparison between different sets of the parameters:  <br>
