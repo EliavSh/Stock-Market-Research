@@ -7,7 +7,7 @@ Implementation of hierarchical attention based mechanism for stocks prediction: 
 https://github.com/dmis-lab/hats 
 
 
-## Sample Results:
+## Sample Results
 Comparison between different sets of the parameters:  <br>
 * 'prediction_interval' - the amount of timestamps into the future of trend prediction
 * 'look_back' - the amount of timestamps from the past we consider relevant for the prediciton
