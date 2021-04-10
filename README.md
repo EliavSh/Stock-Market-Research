@@ -12,12 +12,12 @@ With the demand above, we used only the S&P500 data (whom relational data is pro
 Our mission is to predict for every compnay, whether it about to increase/decrease or stay neutral.
 
 ## Project Workflow
-Our work can be devided into 4 sections: Data Collection, PreProcess, Process and PostProcess.
+Our work can be devided into 4 sections: Data Collection, Pre Process, Process and Post Process.
 * Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
   * Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
-* PreProcess: Filter, Interpolation, Normalization, Feature engineering 
+* Pre Process: Filter, Interpolation, Normalization, Feature engineering 
 * Process (Models): HATS implementation (for the mean time)
-* PostProcess - tensorboard visualization: params and graph
+* Post Process - tensorboard visualization: params and graph
 
 ## Sample Results
 We measure success by 2 main concepts of top/bottom k hit ratio. which means that we take 
