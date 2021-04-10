@@ -34,5 +34,7 @@ We can see that in some of the cases the hit-ratio of increasing stocks is aroun
 
 ## Further Work
 First of all, we have bunch of TODOs in the project :)
+
 Next, I would like to implement the model using tf v2 insteada of v1
+
 After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
