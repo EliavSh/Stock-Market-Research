@@ -30,4 +30,4 @@ Comparison between different sets of the parameters:  <br>
 * 'min_max_norm_back' - the amount of timestamps from the past we use to norm (min-max normalization) the data
 ![image](https://user-images.githubusercontent.com/55198967/114267689-d8ef2f80-9a05-11eb-917d-821c345269b8.png)
 
-We can see that in some of the cases the hit-ratio is around 56% for top and bottom (increasing and decreasing)
+We can see that in some of the cases the hit-ratio of increasing stocks is around 54%.
