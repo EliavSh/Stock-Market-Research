@@ -6,7 +6,7 @@ https://github.com/sangyx/deep-finance
 Implementation of hierarchical attention based mechanism for stocks prediction: <br>
 https://github.com/dmis-lab/hats 
 
-## Project Pipline
+## Project Workflow
 Our work can be devided into 4 sections: Data Collection, PreProcess, Process and PostProcess.
 * Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
   * Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
