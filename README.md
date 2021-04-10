@@ -33,8 +33,13 @@ Comparison between different sets of the parameters:  <br>
 We can see that in some of the cases the hit-ratio of increasing stocks is around 54%.
 
 ## Further Work
-First of all, we have bunch of TODOs in the project :)
+***General work:
+1. First of all, we have bunch of TODOs in the project :)
 
-Next, I would like to implement the model using tf v2 insteada of v1
+2. Next, I would like to implement the model using tf v2 insteada of v1
 
-After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
+3. After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
+
+Algorithmic work:
+1. build and test new relational data by the concepts described in the article and more
+2. Compare the success of the model with and without the attention mechanism
