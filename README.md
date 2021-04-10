@@ -34,11 +34,11 @@ We can see that in some of the cases the hit-ratio of increasing stocks is aroun
 
 ## Further Work
 General work:
-1. First of all, we have bunch of TODOs in the project :)
-2. Next, I would like to implement the model using tf v2 insteada of v1
-3. After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
+* First of all, we have bunch of TODOs in the project :)
+* Next, I would like to implement the model using tf v2 insteada of v1
+* After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
 
 Research work:
-1. Build and test new relational data by the concepts described in the article and more (see WIKI)
+* Build and test new relational data by the concepts described in the article and more (see WIKI)
   * see: [Organizations Properties](https://www.wikidata.org/wiki/Wikidata:List_of_properties/organization)
-2. Compare the success of the model with and without the attention mechanism
+* Compare the success of the model with and without the attention mechanism
