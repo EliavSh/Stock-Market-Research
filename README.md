@@ -16,7 +16,7 @@ Our work can be devided into 4 sections: Data Collection, PreProcess, Process an
 * Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
   * Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
 * PreProcess: Filter, Interpolation, Normalization, Feature engineering 
-* Process (Models): HATS implementation
+* Process (Models): HATS implementation (for the mean time)
 * PostProcess - tensorboard visualization: params and graph
 
 ## Sample Results
