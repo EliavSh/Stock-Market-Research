@@ -31,7 +31,7 @@ def main(conf):
     writer = tf.compat.v1.summary.FileWriter(log_dir)
 
     my_executor = BasicExecutor(sess, writer, ModelEnum.HATS, list(stocks_data.keys()), conf)
-    # writer.add_graph(sess.graph)
+    writer.add_graph(sess.graph)
 
     my_executor.start(train_set, test_set)
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     temp = True
     if temp:
         config = MainConfig()
-        config.prediction_intervals = 6
+        config.prediction_intervals = 24
         main(config)
     else:
         # list of intervals of length of 5 minutes, ex: 6 means 6*5=30 minutes prediction

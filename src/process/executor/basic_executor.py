@@ -3,12 +3,12 @@ import tensorflow as tf
 
 from .evaluator import Evaluator
 from .abstract_executor import AbstractExecutor
-from ..model_enum import ModelEnum
+from src.process.models.model_enum import ModelEnum
 
 
 class BasicExecutor(AbstractExecutor):
     """
-    This class execute all precesses regards the model: train and test
+    This class execute all precesses regards the models: train and test
     """
 
     def __init__(self, sess, writer, model: ModelEnum, symbols, config):
@@ -38,7 +38,7 @@ class BasicExecutor(AbstractExecutor):
         # batch is whole dataset of a single company
         feed_dict = {self.model.x: x, self.model.y: y, self.evaluator.rates: rt}
 
-        # in case of train, we calculating model.optimize and updating network weights by that
+        # in case of train, we calculating models.optimize and updating network weights by that
         if phase == 'train':
             _, loss, pred, prob, summaries = self.sess.run(
                 [self.model.optimize, self.model.cross_entropy, self.model.prediction, self.model.prob, self.evaluator.train_summaries], feed_dict=feed_dict)

@@ -15,7 +15,7 @@ class BasicNormalizer(AbstractNormalizer):
 
     def normalize(self, stocks_list: Dict[str, List[list]]) -> None:
         """
-        Here we normalize all the fields that are later fed into the model
+        Here we normalize all the fields that are later fed into the models
         Stock-Close-Field - we use the parameter with a rolling diff (period of 1).
         All-fields - reduce range to (0,1) by look-back
         """
