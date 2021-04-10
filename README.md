@@ -8,7 +8,7 @@ https://github.com/dmis-lab/hats
 
 ## Project Pipline
 1. Data Collection: Interactive Brokers API + Python Script --> InfluxDB on Docker container 
-* Couple months of 5 minutes resolution. params: Open|Close|High|Low|Volume.
+ * Couple months of 5 minutes resolution. params: Open, Close, High, Low, Volume.
 2. PreProcess: Filter, Interpolation, Normalization, Feature engineering 
 3. Process (Models): HATS implementation
 4. PostProcess - tensorboard visualization: params and graph
