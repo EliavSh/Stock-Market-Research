@@ -31,3 +31,8 @@ Comparison between different sets of the parameters:  <br>
 ![image](https://user-images.githubusercontent.com/55198967/114267689-d8ef2f80-9a05-11eb-917d-821c345269b8.png)
 
 We can see that in some of the cases the hit-ratio of increasing stocks is around 54%.
+
+## Further Work
+First of all, we have bunch of TODOs in the project :)
+Next, I would like to implement the model using tf v2 insteada of v1
+After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
