@@ -21,11 +21,13 @@ Our work can be devided into 4 sections: Data Collection, PreProcess, Process an
 
 ## Sample Results
 We measure success by 2 main concepts of top/bottom k hit ratio. which means that we take 
-the top k companies that we are most confident with their trend and ask, what 
-is the percentage of companies that actualy changed according our prediction?
+the top k companies that we are most confident with their trend (increase:top and decrease:bottom) and ask, what 
+is the percentage of companies that actualy changed according our prediction.
 
 Comparison between different sets of the parameters:  <br>
 * 'prediction_interval' - the amount of timestamps into the future of trend prediction
 * 'look_back' - the amount of timestamps from the past we consider relevant for the prediciton
 * 'min_max_norm_back' - the amount of timestamps from the past we use to norm (min-max normalization) the data
 ![image](https://user-images.githubusercontent.com/55198967/114267689-d8ef2f80-9a05-11eb-917d-821c345269b8.png)
+
+We can see that in some of the cases the hit-ratio is around 56% for top and bottom (increasing and decreasing)
