@@ -39,5 +39,6 @@ General work:
 3. After all the above, I would try and collect more data (2 years instead of 2 months) and analyze the results for windowed periods over the data time zone.
 
 Research work:
-1. build and test new relational data by the concepts described in the article and more
+1. Build and test new relational data by the concepts described in the article and more (see WIKI)
+  * see: [Organizations Properties](https://www.wikidata.org/wiki/Wikidata:List_of_properties/organization)
 2. Compare the success of the model with and without the attention mechanism
