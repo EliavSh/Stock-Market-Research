@@ -8,7 +8,7 @@ https://github.com/dmis-lab/hats
 
 In our project we gathered data of 3K companies from the Nasdaq Market. <br>
 We implemented the HATS model (by the article above), which uses relational data for stock market prediction.
-With the demand above, we used only the S&P500 data (whom relational data is provided by the article researches).
+With the demand above, we used only the S&P500 data (whose relational data is provided by the article researches).
 Our mission is to predict for every compnay, whether it about to increase/decrease or stay neutral.
 
 ## Project Workflow
