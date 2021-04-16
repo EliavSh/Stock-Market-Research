@@ -1,22 +1,30 @@
 import numpy as np
 import tensorflow as tf
 
-from .evaluator import Evaluator
-from .abstract_executor import AbstractExecutor
+from .evaluator_tensor_flow_v1 import EvaluatorTensorFlowV1
+from src.process.executor.abstract_executor import AbstractExecutor
 from src.process.models.model_enum import ModelEnum
+from src import MainConfig
 
 
-class BasicExecutor(AbstractExecutor):
+def conf_to_string(c: MainConfig):
+    return "prediction_interval_%s__look_back_%s__min_max_back_%s" % (c.prediction_intervals, c.look_back, c.min_max_norm_intervals)
+
+
+class ExecutorTensorFlowV1(AbstractExecutor):
     """
     This class execute all precesses regards the models: train and test
     """
 
-    def __init__(self, sess, writer, model: ModelEnum, symbols, config):
-        self.sess = sess
-        self.writer = writer
+    def __init__(self, model: ModelEnum, symbols, config):
+        self.sess = tf.Session()
 
-        self.model = model.get(sess, writer, symbols, config)
-        self.evaluator = Evaluator(self.sess, config.num_classes, self.model, config.top_k_percent)
+        log_dir = "tensorboard/" + conf_to_string(config)
+        self.writer = tf.compat.v1.summary.FileWriter(log_dir)
+        self.writer.add_graph(self.sess.graph)
+
+        self.model = model.get(self.sess, self.writer, symbols, config)
+        self.evaluator = EvaluatorTensorFlowV1(self.sess, config.num_classes, self.model, config.top_k_percent)
 
         self.n_epochs = config.n_epochs
 

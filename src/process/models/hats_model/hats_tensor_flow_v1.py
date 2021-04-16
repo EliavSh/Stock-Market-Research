@@ -5,7 +5,7 @@ from .hats_config import HatsConfig
 from .hats_utils.model_parameters import ModelParams
 
 
-class HATS(AbstractModel):
+class HatsTensorFlowV1(AbstractModel):
     def __init__(self, sess, writer, symbols, config):
         super().__init__()
         # tensorflow and tensorboard initiators
@@ -31,6 +31,14 @@ class HATS(AbstractModel):
         # helper variables
         self.num_neighbors = tf.placeholder_with_default(HatsConfig.neighbors_sample, shape=(), name='num_neighbors')
         self.keep_prob = tf.placeholder_with_default(1 - HatsConfig.dropout, shape=(), name='keep_prob')
+
+        # global step counter
+        with tf.variable_scope('global_step'):
+            self.global_step_tensor = tf.Variable(0, trainable=False, name='global_step')
+        # epoch counter
+        with tf.variable_scope('cur_epoch'):
+            self.cur_epoch_tensor = tf.Variable(0, trainable=False, name='cur_epoch')
+            self.increment_cur_epoch_tensor = tf.assign(self.cur_epoch_tensor, self.cur_epoch_tensor + 1)
 
         self.build_model()
 

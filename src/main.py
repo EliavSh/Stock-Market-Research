@@ -3,10 +3,6 @@ from src import *
 from multiprocessing import Process
 
 
-def conf_to_string(c: MainConfig):
-    return "prediction_interval_%s__look_back_%s__min_max_back_%s" % (c.prediction_intervals, c.look_back, c.min_max_norm_intervals)
-
-
 def main(conf):
     # filter stocks by: keep only the stocks with the maximum trading days in their record (our database)
     stocks_data = FilterEnum.IntersectionFilter.get(conf, FilterEnum.SNP500Filter.get(conf),
@@ -24,14 +20,7 @@ def main(conf):
     # split data to train and test
     train_set, test_set = TimeSeriesSplit(stocks_data, conf).train_test_split()
 
-    # process
-    sess = tf.Session()
-
-    log_dir = "tensorboard/" + conf_to_string(conf)
-    writer = tf.compat.v1.summary.FileWriter(log_dir)
-
-    my_executor = BasicExecutor(sess, writer, ModelEnum.HATS, list(stocks_data.keys()), conf)
-    writer.add_graph(sess.graph)
+    my_executor = ExecutorTensorFlowV1(ModelEnum.HatsTensorFlowV1, list(stocks_data.keys()), conf)
 
     my_executor.start(train_set, test_set)
 

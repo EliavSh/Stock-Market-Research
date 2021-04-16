@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 
-class Evaluator:
+class EvaluatorTensorFlowV1:
     def __init__(self, sess, n_labels, model, top_k_percent):
         self.sess = sess
         self.n_labels = n_labels

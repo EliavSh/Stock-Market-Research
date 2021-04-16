@@ -1,1 +1,1 @@
-from .basic_executor import BasicExecutor
+from src.process.executor.tf_v1.executor_tensor_flow_v1 import ExecutorTensorFlowV1
