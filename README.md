@@ -18,7 +18,7 @@ Our work can be devided into 4 sections: Data Collection, Pre Process, Process a
   * Couple of months, 5 minutes resolution, 3K companies. parameters: Open, Close, High, Low, Volume.
 * Pre Process: Filter, Interpolation, Normalization, Feature engineering 
 * Process (Models): HATS implementation (for the mean time)
-* Post Process - tensorboard visualization: params and graph
+* Post Process - tensorboard visualization: scalars (loss, top/bottom-k) and graph
 
 ## Sample Results
 We measure success by 2 main concepts of top/bottom k hit ratio. which means that we take 
