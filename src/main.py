@@ -1,4 +1,3 @@
-import tensorflow as tf
 from src import *
 from multiprocessing import Process
 
@@ -20,16 +19,16 @@ def main(conf):
     # split data to train and test
     train_set, test_set = TimeSeriesSplit(stocks_data, conf).train_test_split()
 
+    # run the model
     my_executor = ExecutorTensorFlowV1(ModelEnum.HatsTensorFlowV1, list(stocks_data.keys()), conf)
-
     my_executor.start(train_set, test_set)
 
     print("king")
 
 
 if __name__ == '__main__':
-    temp = True
-    if temp:
+    single_process = True
+    if single_process:
         config = MainConfig()
         config.prediction_intervals = 24
         main(config)

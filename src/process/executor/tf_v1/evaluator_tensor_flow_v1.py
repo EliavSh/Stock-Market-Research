@@ -9,10 +9,12 @@ class EvaluatorTensorFlowV1:
     def __init__(self, sess, n_labels, model, top_k_percent):
         self.sess = sess
         self.n_labels = n_labels
+        assert n_labels >= 2, 'the number of labels should be at least 2'
         self.model = model
         self.top_k_percent = top_k_percent
 
         self.rates = tf.placeholder(tf.float32, shape=[self.model.params.num_companies], name='rates')
+        # TODO - we should create a hist of the rates of fp and fn. that's the key of understanding whether or not our wrong predictions are dominant
         self.increase_class = tf.cast(tf.placeholder_with_default(input=self.n_labels - 1, shape=(), name='increase_class'), tf.dtypes.int64)
         self.decrease_class = tf.cast(tf.placeholder_with_default(input=0, shape=(), name='decrease_class'), tf.dtypes.int64)
 

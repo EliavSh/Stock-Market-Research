@@ -6,21 +6,13 @@ from .hats_utils.model_parameters import ModelParams
 
 
 class HatsTensorFlowV1(AbstractModel):
-    def __init__(self, sess, writer, symbols, config):
-        super().__init__()
+    def __init__(self, sess, symbols, config):
+        super().__init__(config)
         # tensorflow and tensorboard initiators
         self.sess = sess
-        self.writer = writer
 
         # construct essential classes
         self.params = ModelParams(symbols)
-
-        # load from main_config
-        self.n_epochs = config.n_epochs
-        self.features = config.features
-        self.input_dim = len(config.features)
-        self.look_back = config.look_back
-        self.n_labels = config.num_classes
 
         # load from hats_config
         self.lr = HatsConfig.lr
@@ -35,10 +27,6 @@ class HatsTensorFlowV1(AbstractModel):
         # global step counter
         with tf.variable_scope('global_step'):
             self.global_step_tensor = tf.Variable(0, trainable=False, name='global_step')
-        # epoch counter
-        with tf.variable_scope('cur_epoch'):
-            self.cur_epoch_tensor = tf.Variable(0, trainable=False, name='cur_epoch')
-            self.increment_cur_epoch_tensor = tf.assign(self.cur_epoch_tensor, self.cur_epoch_tensor + 1)
 
         self.build_model()
 

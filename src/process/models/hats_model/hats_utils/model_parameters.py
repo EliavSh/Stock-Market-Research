@@ -20,7 +20,20 @@ class ModelParams:
         self.symbols_with_historical_data = symbols_with_historical_data
         self.neighbors_per_relation_type, self.summary_adjacency_matrix, self.num_relation_types, self.num_companies = self.calc_relation_types_over_companies()
 
-    def calc_relation_types_over_companies(self) -> Tuple[List, np.ndarray, int, int]:
+    def calc_relation_types_over_companies(self) -> Tuple[List[List[np.array]], np.ndarray, int, int]:
+        """
+        :return:
+        1. neighbors_per_relation_type:
+            list of all relation types with:
+                list of all companies with:
+                    1-dim np.array of companies indices, that are in relation to the specific company
+                    -on the specific relation type
+        2. summary_adjacency_matrix:
+            2-dim np.array of size (n_relation_types, n_companies), with sums up the number of relations
+            a company have for every relation type and all companies
+        3. num_relation_types: the number of relation types
+        4. num_companies: the number of companies
+        """
         # TODO - add test cases with matching files (.pkl, .csv ...)
         # read tickers with relations
         tickers = pickle.load(open(os.path.join(os.path.dirname(__file__), 'ordered_ticker.pkl'), 'rb'))
@@ -39,17 +52,15 @@ class ModelParams:
         # set commonly used variables from the adjacency matrix
         summary_adjacency_matrix = graph_adjacency_matrix.sum(2)
 
+        """
+        reduce relation types by:
+         1. relation types which zero companies 
+         2. too common relation types
+        """
         # TODO - which max is better?
         max_relations = pd.Series(summary_adjacency_matrix[summary_adjacency_matrix.any(1)].sum(1)).quantile([self.max_relations_allowed_quantile]).values[0]
         max_relations = np.inf
         keep_relation_types = np.logical_and(summary_adjacency_matrix.any(1), summary_adjacency_matrix.sum(1) <= max_relations)
-
-        # # reduce relation types by zeros
-        # summary_adjacency_matrix = summary_adjacency_matrix[summary_adjacency_matrix.any(1)]
-        #
-        # # reduce too common relation types
-        # max_relations = pd.Series(summary_adjacency_matrix[summary_adjacency_matrix.any(1)].sum(1)).quantile([max_relations_allowed_quantile]).values[0]
-        # summary_adjacency_matrix = summary_adjacency_matrix[summary_adjacency_matrix.sum(1) < max_relations]
 
         summary_adjacency_matrix = summary_adjacency_matrix[keep_relation_types]
         num_relation_types = len(summary_adjacency_matrix)
@@ -65,6 +76,13 @@ class ModelParams:
         return neighbors_per_relation_type, summary_adjacency_matrix, num_relation_types, num_companies
 
     def sample_neighbors(self):
+        """
+        TODO - why are we sampling neighbors? the result is that same weights are being updated from different source of inputs,
+         it's very probable to get different companies in case neighbors_sample >> k..
+         In my opinion we should use all the neighbors a company has and prune weights if needed
+         further work needed here, I think we should build a model for companies relations and gather the most related by k,
+         that way we always training the attention weights toward the same direction (based on same company features as input)
+        """
         k = self.neighbors_sample
         neighbors_batch = []
         for rel_neighbors in self.neighbors_per_relation_type:
