@@ -30,7 +30,7 @@ class HatsTensorFlowV1(AbstractModel):
 
         self.build_model()
 
-        # TODO - place it somewhere else -- must place it after build model?
+        # TODO - place it somewhere else -- must place it after build_model()?
         init = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
         self.sess.run(init)
 

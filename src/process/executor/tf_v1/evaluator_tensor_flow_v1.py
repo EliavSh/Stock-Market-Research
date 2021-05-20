@@ -15,6 +15,7 @@ class EvaluatorTensorFlowV1:
 
         self.rates = tf.placeholder(tf.float32, shape=[self.model.params.num_companies], name='rates')
         # TODO - we should create a hist of the rates of fp and fn. that's the key of understanding whether or not our wrong predictions are dominant
+        #  Furthermore, histograms of tp and tn would help us too with building a wallet aimed to evaluate our model financial success
         self.increase_class = tf.cast(tf.placeholder_with_default(input=self.n_labels - 1, shape=(), name='increase_class'), tf.dtypes.int64)
         self.decrease_class = tf.cast(tf.placeholder_with_default(input=0, shape=(), name='decrease_class'), tf.dtypes.int64)
 
