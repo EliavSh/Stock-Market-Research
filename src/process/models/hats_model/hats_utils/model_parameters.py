@@ -29,8 +29,8 @@ class ModelParams:
                     1-dim np.array of companies indices, that are in relation to the specific company
                     -on the specific relation type
         2. summary_adjacency_matrix:
-            2-dim np.array of size (n_relation_types, n_companies), with sums up the number of relations
-            a company have for every relation type and all companies
+            2-dim np.array of size (n_relation_types, n_companies), which sums the number of relations
+            a company have for every relation type for all companies
         3. num_relation_types: the number of relation types
         4. num_companies: the number of companies
         """
