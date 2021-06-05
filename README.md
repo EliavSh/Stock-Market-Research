@@ -6,7 +6,7 @@ https://github.com/sangyx/deep-finance
 Implementation of hierarchical attention based mechanism for stocks prediction: <br>
 https://github.com/dmis-lab/hats 
 
-In this project we gathered data of 3K companies from the Nasdaq Market. <br>
+In this project we gathered data of 3000 companies from the Nasdaq Market. <br>
 We implemented the HATS model (based on the article above), which uses relational data for stock market prediction.
 With the demand above, we used only the S&P500 data (whose relational data is provided by the article researches).
 Our mission is to predict, for every compnay, whether it about to increase/decrease or stay neutral.
